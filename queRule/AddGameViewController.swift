@@ -13,7 +13,7 @@ protocol AddGameViewControllerDelegate {
     func didAddGame()
 }
 
-class AddGameViewController: UIViewController {
+class AddGameViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     @IBOutlet weak var gameImageView: UIImageView!
     @IBOutlet weak var borrrowedSwitch: UISwitch!
@@ -88,4 +88,76 @@ class AddGameViewController: UIViewController {
         }
     }
 
+    func keyboardWillShow(notification: NSNotification) {
+        let info = notification.userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        let keyboardTime = (info[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
+        
+        UIView.animate(withDuration: keyboardTime) { 
+            self.view.frame.origin.y = -(keyboardFrame.height)
+        }
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        let info = notification.userInfo!
+        let keyboardTime = (info[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
+        
+        UIView.animate(withDuration: keyboardTime) {
+            self.view.frame.origin.y = 0
+        }
+    }
+        
+    func viewTapped() {
+        for view in self.view.subviews {
+            if let textfield = view as? UITextField {
+                textfield.resignFirstResponder()
+            }
+        }
+    }
+        
+    func takePictureTapped() {
+        guard cameraPermissions else {
+            let permissionsAlertController = UIAlertController(title: "Permisos", message: "No tiene permisos para acceder a la cámara del dispositivo. Puede cambiar esta información en Ajustes", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Aceptar", style: .default, handler: nil)
+            permissionsAlertController.addAction(okAction)
+            present(permissionsAlertController, animated: true, completion: nil)
+            
+            return
+        }
+        
+        let alertController = UIAlertController(title: "Añadir fotos del videojuego", message: "", preferredStyle: .actionSheet)
+        
+        let cameraOption = UIAlertAction(title: "Cámara", style: .default) { (alertAction) in
+            self.imagePickerController.sourceType = .camera
+            self.present(self.imagePickerController, animated: true, completion: nil)
+        }
+        
+        let cameraRollOption = UIAlertAction(title: "Carrete", style: .default) { (alertAction) in
+            self.imagePickerController.sourceType = .photoLibrary
+            self.present(self.imagePickerController, animated: true, completion: nil)
+        }
+        
+        let cancelOption = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
+        
+        if UIImagePickerController.isCameraDeviceAvailable(.rear) {
+            alertController.addAction(cameraOption)
+        }
+        alertController.addAction(cameraRollOption)
+        alertController.addAction(cancelOption)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func datePickerChangedValue(picker: UIDatePicker) {
+        txtBorrowedDate.text = dateFormatter.string(from: picker.date)
+    }
+    
+    func saveButtonPressed() {
+        saveGame()
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func cancelButtonPressed() {
+        dismiss(animated: true, completion: nil)
+    }
 }
