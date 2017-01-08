@@ -108,7 +108,6 @@
                                             <outlet property="lblBorrowedDate" destination="VAj-yB-kY4" id="WjT-fb-g6b"/>
                                             <outlet property="lblBorrowedTo" destination="CPl-zH-GD1" id="0Vk-yr-Z1v"/>
                                             <outlet property="lblTitle" destination="Ix4-vR-RWP" id="sZ6-th-gsd"/>
-                                            <segue destination="hlI-Ho-AQY" kind="show" identifier="editGameSegue" id="u7p-m1-QJr"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -129,7 +128,8 @@
                     <connections>
                         <outlet property="collectionView" destination="NCk-X6-ZUe" id="DSL-q6-ctt"/>
                         <outlet property="filterControl" destination="sAT-P6-RVa" id="gGS-it-qMc"/>
-                        <segue destination="jfa-Vq-uOX" kind="presentation" id="yLX-Db-Yf8"/>
+                        <segue destination="jfa-Vq-uOX" kind="presentation" identifier="addGameSegue" id="yLX-Db-Yf8"/>
+                        <segue destination="hlI-Ho-AQY" kind="show" identifier="editGameSegue" id="mWU-7b-wcZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -161,9 +161,12 @@
                                 <color key="textColor" red="0.29019607843137252" green="0.29019607843137252" blue="0.29019607843137252" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zqt-Li-8mm">
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zqt-Li-8mm">
                                 <rect key="frame" x="200" y="427" width="51" height="31"/>
                                 <color key="onTintColor" red="0.8784313725490196" green="0.21176470588235294" blue="0.18431372549019609" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="switchValueChanged:" destination="hlI-Ho-AQY" eventType="valueChanged" id="nok-PJ-25j"/>
+                                </connections>
                             </switch>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="wHO-Kj-EQ9">
                                 <rect key="frame" x="27" y="466" width="320" height="110"/>
@@ -244,6 +247,9 @@
                                     <constraint firstAttribute="height" constant="34" id="lOi-Nh-OF2"/>
                                 </constraints>
                                 <state key="normal" title="Eliminar Videojuego"/>
+                                <connections>
+                                    <action selector="deletePressed" destination="hlI-Ho-AQY" eventType="touchUpInside" id="Dpw-zs-uc1"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.93725490196078431" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -257,6 +263,7 @@
                             <constraint firstItem="AMA-mK-CPR" firstAttribute="leading" secondItem="NJ4-tk-HWH" secondAttribute="leading" id="cDV-Hm-TwP"/>
                             <constraint firstItem="a89-Pp-hf6" firstAttribute="top" secondItem="RKy-cR-wCG" secondAttribute="bottom" constant="20" id="dxh-J1-5CG"/>
                             <constraint firstItem="AMA-mK-CPR" firstAttribute="top" secondItem="NJ4-tk-HWH" secondAttribute="bottom" constant="15" id="gEf-hl-wAo"/>
+                            <constraint firstItem="Zqt-Li-8mm" firstAttribute="leading" secondItem="AMA-mK-CPR" secondAttribute="trailing" constant="36.5" id="nbd-Px-kgI"/>
                             <constraint firstItem="RKy-cR-wCG" firstAttribute="centerX" secondItem="UFu-45-CJV" secondAttribute="centerX" id="z4R-q9-Dw6"/>
                         </constraints>
                     </view>
@@ -281,6 +288,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Cch-Eb-whl">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="barTintColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <textAttributes key="titleTextAttributes">
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -302,6 +310,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="6XU-uq-FOt">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="barTintColor" red="0.34901960784313724" green="0.34901960784313724" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <textAttributes key="titleTextAttributes">
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -321,6 +330,6 @@
         <image name="img_game_cover" width="320" height="320"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="u7p-m1-QJr"/>
+        <segue reference="mWU-7b-wcZ"/>
     </inferredMetricsTieBreakers>
 </document>

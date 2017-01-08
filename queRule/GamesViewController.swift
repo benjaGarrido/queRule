@@ -107,6 +107,25 @@ class GamesViewController: UIViewController, UICollectionViewDelegate, UICollect
         }
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "addGameSegue" {
+            let addNavVC = segue.destination as! UINavigationController
+            let addVC = addNavVC.topViewController as! AddGameViewController
+            addVC.manageObjectContext = self.managedObjectContext
+            
+            addVC.delegate = self
+        }
+        if segue.identifier == "editGameSegue" {
+            let addGameVC = segue.destination as! AddGameViewController
+            addGameVC.manageObjectContext = self.managedObjectContext
+            
+            let selectedIndex = collectionView.indexPathsForSelectedItems?.first?.row
+            let game = lstGames[selectedIndex!]
+            addGameVC.game = game
+            
+            addGameVC.delegate = self
+        }
+    }
     
     // Creamos un método que nos devuelva un texto con formato (enriquecido)
     func formatColours(string: String, color: UIColor) -> NSMutableAttributedString {
@@ -143,6 +162,12 @@ class GamesViewController: UIViewController, UICollectionViewDelegate, UICollect
         } catch {
             print("Error recuperando datos de CoreData")
         }
+    }
+}
+
+extension GamesViewController: AddGameViewControllerDelegate {
+    func didAddGame() {
+        self.collectionView.reloadData()
     }
 }
 

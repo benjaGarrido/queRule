@@ -233,6 +233,28 @@ class AddGameViewController: UIViewController, UIImagePickerControllerDelegate, 
         }
     }
     
+    @IBAction func switchValueChanged(_ sender: UISwitch) {
+        if sender.isOn {
+            txtBorrowedTo.isEnabled = true
+            txtBorrowedDate.isEnabled = true
+            txtBorrowedDate.text = dateFormatter.string(from: Date())
+        } else {
+            txtBorrowedTo.isEnabled = false
+            txtBorrowedDate.isEnabled = false
+            txtBorrowedTo.text = ""
+            txtBorrowedDate.text = ""
+        }
+    }
+    
+    @IBAction func deletePressed() {
+        if let context = self.manageObjectContext {
+            context.delete(game!)
+            game = nil
+            delegate?.didAddGame()
+            let _ = navigationController?.popViewController(animated: true)
+        }
+    }
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let pickedImage = info[UIImagePickerControllerEditedImage] as? UIImage {
             self.gameImageView.image = pickedImage
