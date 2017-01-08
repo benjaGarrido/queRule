@@ -12,7 +12,7 @@
         <!--Mis juegos-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="queRule" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="GamesViewController" customModule="queRule" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -39,7 +39,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="editGameSegue" id="AA6-qo-8YF">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="" id="AA6-qo-8YF" customClass="GameCollectionViewCell" customModule="queRule" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="355" height="120"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -100,6 +100,11 @@
                                         </constraints>
                                         <size key="customSize" width="355" height="120"/>
                                         <connections>
+                                            <outlet property="imageView" destination="J1h-iv-hDk" id="FgQ-jt-Ov4"/>
+                                            <outlet property="lblBorrowed" destination="COQ-bF-eiv" id="c6v-Ce-MBp"/>
+                                            <outlet property="lblBorrowedDate" destination="VAj-yB-kY4" id="WjT-fb-g6b"/>
+                                            <outlet property="lblBorrowedTo" destination="CPl-zH-GD1" id="0Vk-yr-Z1v"/>
+                                            <outlet property="lblTitle" destination="Ix4-vR-RWP" id="sZ6-th-gsd"/>
                                             <segue destination="hlI-Ho-AQY" kind="show" identifier="editGameSegue" id="u7p-m1-QJr"/>
                                         </connections>
                                     </collectionViewCell>
@@ -119,6 +124,8 @@
                     </view>
                     <navigationItem key="navigationItem" title="Mis juegos" id="ZZh-wL-406"/>
                     <connections>
+                        <outlet property="collectionView" destination="NCk-X6-ZUe" id="DSL-q6-ctt"/>
+                        <outlet property="filterControl" destination="sAT-P6-RVa" id="gGS-it-qMc"/>
                         <segue destination="jfa-Vq-uOX" kind="presentation" id="yLX-Db-Yf8"/>
                     </connections>
                 </viewController>
@@ -129,7 +136,7 @@
         <!--Añadir videojuego-->
         <scene sceneID="iyP-Zm-AsH">
             <objects>
-                <viewController title="Añadir videojuego" id="hlI-Ho-AQY" sceneMemberID="viewController">
+                <viewController title="Añadir videojuego" id="hlI-Ho-AQY" customClass="AddGameViewController" customModule="queRule" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="6TO-g4-KGT"/>
                         <viewControllerLayoutGuide type="bottom" id="a89-Pp-hf6"/>
@@ -303,6 +310,6 @@
         <image name="img_game_cover" width="320" height="320"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="f8d-Nw-DqM"/>
+        <segue reference="u7p-m1-QJr"/>
     </inferredMetricsTieBreakers>
 </document>

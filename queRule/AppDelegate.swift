@@ -16,7 +16,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        let navVC = self.window?.rootViewController as! UINavigationController
+        let gamesViewController = navVC.topViewController as! GamesViewController
+        // Asociamos el contexto a GamesViewController para que podamos usarlo.
+        gamesViewController.managedObjectContext = persistentContainer.viewContext
+        
         return true
     }
 
