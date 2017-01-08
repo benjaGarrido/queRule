@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import AVFoundation
 
 protocol AddGameViewControllerDelegate {
     func didAddGame()
@@ -88,6 +89,18 @@ class AddGameViewController: UIViewController, UIImagePickerControllerDelegate, 
         }
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        checkPermissions()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if game != nil {
+            saveGame()
+        }
+    }
+    
     func keyboardWillShow(notification: NSNotification) {
         let info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
@@ -112,6 +125,24 @@ class AddGameViewController: UIViewController, UIImagePickerControllerDelegate, 
             if let textfield = view as? UITextField {
                 textfield.resignFirstResponder()
             }
+        }
+    }
+    
+    func checkPermissions() {
+        let cameraMediaType = AVMediaTypeVideo
+        let cameraAuthoritationStatus = AVCaptureDevice.authorizationStatus(forMediaType: cameraMediaType)
+        switch cameraAuthoritationStatus {
+        case .authorized:
+            cameraPermissions = true
+        case .restricted:
+            cameraPermissions = false
+        case .denied:
+            cameraPermissions = false
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(forMediaType: cameraMediaType, completionHandler: { granted
+                in
+                self.cameraPermissions = granted
+            })
         }
     }
         
@@ -159,5 +190,53 @@ class AddGameViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     func cancelButtonPressed() {
         dismiss(animated: true, completion: nil)
+    }
+    
+    func saveGame() {
+        if let context = self.manageObjectContext {
+            var editedGame: Game? = nil
+            if game == nil {
+                editedGame = Game(context: context)
+            } else {
+                editedGame = game
+            }
+            
+            if let editedGame = editedGame {
+                editedGame.dateCreated = NSDate()
+                if let title = txtTitle.text {
+                    editedGame.title = title
+                }
+                editedGame.borrowed = borrrowedSwitch.isOn
+                if let image = gameImageView.image {
+                    editedGame.image = UIImagePNGRepresentation(image) as NSData?
+                } else {
+                    editedGame.image = NSData()
+                }
+                if editedGame.borrowed {
+                    if let borrowedTo = txtBorrowedTo.text {
+                        editedGame.borrowedTo = borrowedTo.uppercased()
+                    }
+                    if let strDate = txtBorrowedDate.text {
+                        editedGame.borrowedDate = dateFormatter.date(from: strDate) as NSDate?
+                    }
+                } else {
+                    editedGame.borrowedTo = nil
+                    editedGame.borrowedDate = nil
+                }
+                do {
+                    try context.save()
+                    self.delegate?.didAddGame()
+                } catch {
+                    print("Ha habido un error al guardar los datos en Core Data")
+                }
+            }
+        }
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let pickedImage = info[UIImagePickerControllerEditedImage] as? UIImage {
+            self.gameImageView.image = pickedImage
+        }
+        picker.dismiss(animated: true, completion: nil)
     }
 }
