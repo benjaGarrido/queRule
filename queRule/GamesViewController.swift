@@ -17,8 +17,23 @@ class GamesViewController: UIViewController, UICollectionViewDelegate, UICollect
     var managedObjectContext: NSManagedObjectContext? = nil
     var lstGames: [Game] = [Game]()
     
+    @IBAction func filterChange(_ sender: UISegmentedControl){
+        performGamesQuery()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.alwaysBounceVertical = true
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // Cuando se cargue la pantalla llamamos a la consulta
+        performGamesQuery()
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -74,6 +89,10 @@ class GamesViewController: UIViewController, UICollectionViewDelegate, UICollect
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: self.view.frame.size.width - 20, height: 120)
+    }
+    
     // Creamos un método que nos devuelva un texto con formato (enriquecido)
     func formatColours(string: String, color: UIColor) -> NSMutableAttributedString {
         let length = string.characters.count
@@ -85,6 +104,30 @@ class GamesViewController: UIViewController, UICollectionViewDelegate, UICollect
         myMutableString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSRange(location: 0, length: colonPosition + 1))
         
         return myMutableString
+    }
+    
+    func performGamesQuery() {
+        let request: NSFetchRequest<Game> = Game.fetchRequest()
+        
+        let sortByDate = NSSortDescriptor(key: "dateCreated", ascending: false)
+        request.sortDescriptors = [sortByDate]
+        
+        if filterControl.selectedSegmentIndex == 0 {
+            // Establecemos el predicado (clausula where)
+            let predicate = NSPredicate(format: "borrowed = true")
+            request.predicate = predicate
+        }
+        
+        do {
+            let fetchedGames = try managedObjectContext?.fetch(request)
+            if let fetchedGames = fetchedGames {
+                lstGames = fetchedGames
+                // Recargamos la pantala
+                collectionView.reloadData()
+            }
+        } catch {
+            print("Error recuperando datos de CoreData")
+        }
     }
 }
 

@@ -28,6 +28,9 @@
                                     <segment title="Todos"/>
                                 </segments>
                                 <color key="tintColor" red="0.34901960784313724" green="0.34901960784313724" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="filterChange:" destination="BYZ-38-t0r" eventType="valueChanged" id="LTr-38-rKk"/>
+                                </connections>
                             </segmentedControl>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="NCk-X6-ZUe">
                                 <rect key="frame" x="10" y="107" width="355" height="550"/>
