@@ -261,6 +261,14 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="iBt-kV-wXs"/>
+                    <connections>
+                        <outlet property="borrrowedSwitch" destination="Zqt-Li-8mm" id="vTm-T7-6AL"/>
+                        <outlet property="btnDelete" destination="RKy-cR-wCG" id="ewf-0s-tXa"/>
+                        <outlet property="gameImageView" destination="NJ4-tk-HWH" id="QuR-yU-D8F"/>
+                        <outlet property="txtBorrowedDate" destination="2dq-l5-Tlw" id="lLH-wQ-DNZ"/>
+                        <outlet property="txtBorrowedTo" destination="ph3-Nm-jIQ" id="X5l-am-FHV"/>
+                        <outlet property="txtTitle" destination="THr-5m-2A3" id="ic7-TC-H6G"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qm5-NE-dBf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

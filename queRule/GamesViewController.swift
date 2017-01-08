@@ -93,6 +93,21 @@ class GamesViewController: UIViewController, UICollectionViewDelegate, UICollect
         return CGSize(width: self.view.frame.size.width - 20, height: 120)
     }
     
+    // Cuando seleccionamos una celda para editar
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "editGameSegue", sender: self)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        // Espcacio desde el borde superior hasta el punto que estamos tirando
+        let offsetY = scrollView.contentOffset.y
+        if (offsetY < -120) {
+            // Lanzamos la modal
+            performSegue(withIdentifier: "addGameSegue", sender: self)
+        }
+    }
+    
+    
     // Creamos un método que nos devuelva un texto con formato (enriquecido)
     func formatColours(string: String, color: UIColor) -> NSMutableAttributedString {
         let length = string.characters.count
